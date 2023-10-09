@@ -17,15 +17,8 @@ public class CarsController {
     }
 
     @GetMapping("/cars")
-    public String carList(@RequestParam(value = "count", required = false) Integer count, Model model) {
-        if (count == null) {
-            count = carServiceImpl.carList().size();
-        }
-        if (count < 5) {
-            model.addAttribute("cars", carServiceImpl.carShow(count));
-        } else {
-            model.addAttribute("cars", carServiceImpl.carList());
-        }
+    public String carList(@RequestParam(value = "count", required = false,  defaultValue = "5") int count, Model model) {
+        model.addAttribute("cars", carServiceImpl.carShow(count));
         return "cars";
     }
 }
