@@ -1,13 +1,25 @@
 package web.dao;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import web.model.Car;
+import web.model.User;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
+@Repository
 public class CarDaoImp implements CarDao {
+
+    @Autowired
+    private EntityManagerFactory emf;
+
+//    @PersistenceContext
+//    private EntityManager entityManager;
+
     private final List<Car> cars = new ArrayList<>();
 
     {
@@ -18,6 +30,20 @@ public class CarDaoImp implements CarDao {
         cars.add( new Car("Car-5", "Mod-5", 300_000));
     }
 
+
+    @Override
+    public void add() {
+        EntityManager entityManager = emf.createEntityManager();
+        entityManager.getTransaction().begin();
+        User user = new User();
+        user.setName("Name");
+        user.setLastName("LastName");
+        user.setAge(25);
+        user.setEmail("asdf@mail.ru");
+
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
+    }
     @Override
     public List<Car> carList() {
         return cars;

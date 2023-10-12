@@ -7,4 +7,6 @@ import java.util.List;
 public interface CarDao {
     List<Car> carList();
     List<Car> carShow(int count);
+
+    void add();
 }

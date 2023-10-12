@@ -25,4 +25,8 @@ public class CarServiceImpl implements CarService {
         }
         return carDaoImp.carShow(count);
     }
+    @Override
+    public void add() {
+        carDaoImp.add();
+    }
 }
