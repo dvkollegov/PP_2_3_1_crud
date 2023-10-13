@@ -6,6 +6,7 @@ import web.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
@@ -18,11 +19,9 @@ public class UserDaoImp implements UserDao {
     public List<User> users() {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
-        List<User> resultList = entityManager
+        return entityManager
                 .createQuery("select u from User u", User.class)
                 .getResultList();
-        entityManager.getTransaction().commit();
-        return resultList;
     }
 
     @Override
@@ -34,24 +33,24 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User edit(User user) {
-        return null;
-    }
-
-    @Override
-    public void delete() {
-
-    }
-
-    @Override
-    public User show(long id) {
+    public void edit(User user) {
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
-        User result = entityManager
-                .createQuery("select u from User u where u.id = :id", User.class)
-                .setParameter("id", id)
-                .getSingleResult();
+        entityManager.merge(user);
         entityManager.getTransaction().commit();
-        return result;
+    }
+
+    @Override
+    public void delete(long id) {
+        EntityManager entityManager = emf.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.find(User.class, id));
+        entityManager.getTransaction().commit();
+    }
+
+    @Override
+    public User getUser(long id) {
+        EntityManager entityManager = emf.createEntityManager();
+        return entityManager.find(User.class, id);
     }
 }

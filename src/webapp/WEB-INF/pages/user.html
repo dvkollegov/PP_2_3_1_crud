@@ -3,10 +3,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>User</title>
 </head>
 <body>
-<h1>All Users Table</h1>
+<h1>User</h1>
 <div>
     <table>
         <thead>
@@ -20,21 +20,25 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}">
+        <tr>
             <th th:text="${user.getId()}"/>
             <th th:text="${user.getName()}"/>
             <th th:text="${user.getLastName()}"/>
             <th th:text="${user.getAge()}"/>
             <th th:text="${user.getEmail()}"/>
             <th>
-                <a th:href="@{/users/user?id={id}(id=${user.getId})}">View User</a>
+                <a th:href="@{/users/edit?id={id}(id=${user.getId})}">Edit User</a>
             </th>
         </tr>
         </tbody>
     </table>
 </div>
 <br>
-<hr>
-<a href="/users/new">Create New User</a>
+<br>
+<form th:method="POST" th:action="@{/users/delete?id={id}(id=${user.getId})}">
+    <input type="submit" value="Delete User"/>
+</form>
+<br>
+<a href="/users">Back To Users</a>
 </body>
 </html>
