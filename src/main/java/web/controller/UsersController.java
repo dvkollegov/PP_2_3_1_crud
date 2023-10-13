@@ -6,23 +6,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
-import web.service.UserServiceImp;
 
 @Controller
 @RequestMapping("/users")
 public class UsersController {
 
+    private final UserService userService;
+
     @Autowired
-    UserService userService = new UserServiceImp();
+    public UsersController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("users", userService.users());
+    public String showAllUser(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
     @GetMapping("/user")
-    public String show(@RequestParam(value = "id") int id, Model model) {
+    public String showUser(@RequestParam(value = "id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
         return "user";
     }
@@ -33,26 +36,26 @@ public class UsersController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") User user) {
-        userService.add(user);
+    public String createUser(@ModelAttribute("user") User user) {
+        userService.addUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("/edit")
-    public String edit(@RequestParam(value = "id") int id, Model model) {
+    public String editUser(@RequestParam(value = "id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
         return "edit";
     }
 
-    @PostMapping("/update")
-    public String update(@ModelAttribute("user") User user) {
-        userService.edit(user);
+    @PatchMapping("/update")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
         return "user";
     }
 
-    @PostMapping("/delete")
-    public String delete(@RequestParam("id") int id) {
-        userService.delete(id);
+    @DeleteMapping("/delete")
+    public String deleteUser(@RequestParam("id") int id) {
+        userService.deleteUser(id);
         return "redirect:/users";
     }
 }
