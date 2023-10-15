@@ -42,7 +42,6 @@ public class DataBaseConfig {
    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
       LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
       factoryBean.setDataSource(getDataSource());
-      factoryBean.setPackagesToScan(env.getRequiredProperty("db.entity.package"));
       factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
       factoryBean.setJpaProperties(getProperties());
       factoryBean.setPackagesToScan("web");
